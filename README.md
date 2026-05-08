@@ -8,8 +8,6 @@
 
 Copy and paste the following command into your terminal (PuTTY, Terminal, or Linux console) to install the plugin automatically:
 
-```bash
-wget --no-check-certificate -qO- [https://raw.githubusercontent.com/theking-cs/downloader/main/install.sh](https://raw.githubusercontent.com/theking-cs/downloader/main/install.sh) | bash
 This plugin transforms your receiver into a smart download hub with the following capabilities:
 • Integrated Web Server: Access from your mobile, tablet, or PC via port 7447 of your box to paste download links (YouTube, etc.).
 • File Management: View, play, and delete songs or videos directly from the TV interface.
@@ -31,4 +29,7 @@ From there you can:
 • Python 3 based image (OpenATV, OpenPLI, Egami, etc.).
 • Internet connection.
 • Hard Drive or USB stick mounted at /media/hdd.
+
+wget --no-check-certificate -qO- https://raw.githubusercontent.com/theking-cs/downloader/main/install.sh | bash
+
 Developed by theking-cs
