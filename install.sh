@@ -1,43 +1,57 @@
 #!/bin/bash
+# =================================================
+#   INSTALADOR downloader v1.0
+#   Creado por: theking-cs
+# =================================================
 
-# Configuración de usuario theking-cs
 GITHUB_USER="theking-cs"
-PLUGIN_DIR="downloader"
-VERSION="1.0"
-URL_RAW="https://raw.githubusercontent.com/$GITHUB_USER/downloader/main"
+REPO_NAME="downloader"
+URL_RAW="https://raw.githubusercontent.com/$GITHUB_USER/$REPO_NAME/main"
+PLUGIN_PATH="/usr/lib/enigma2/python/Plugins/Extensions/downloader"
 
 echo "================================================="
-echo "   INSTALADOR $PLUGIN_DIR v$VERSION"
+echo "   INSTALADOR $REPO_NAME v1.0"
 echo "   Creado por: $GITHUB_USER"
 echo "================================================="
 
-# 1. Crear directorios necesarios
-echo "> Preparando entorno..."
-mkdir -p /usr/lib/enigma2/python/Plugins/Extensions/$PLUGIN_DIR
+# 1. Crear carpetas necesarias
+echo "> Preparando entorno y carpetas..."
+mkdir -p $PLUGIN_PATH
 mkdir -p /media/hdd/Mp3
+chmod 777 /media/hdd/Mp3
 
-# 2. Descarga de archivos
-echo "> Descargando archivos v$VERSION..."
-curl -kLs $URL_RAW/plugin.py -o /usr/lib/enigma2/python/Plugins/Extensions/$PLUGIN_DIR/plugin.py
+# 2. Descargar archivos del plugin desde GitHub
+echo "> Descargando archivos del plugin..."
+curl -kLs $URL_RAW/plugin.py -o $PLUGIN_PATH/plugin.py
+curl -kLs $URL_RAW/__init__.py -o $PLUGIN_PATH/__init__.py
 curl -kLs $URL_RAW/descargador.sh -o /usr/bin/descargador.sh
 
-# 3. Permisos Críticos
-echo "> Aplicando permisos 755..."
-# Permisos para el script de descarga
+# 3. Aplicar permisos de ejecución
+echo "> Aplicando permisos..."
 chmod 755 /usr/bin/descargador.sh
-# Permisos para la carpeta del plugin y sus archivos
-chmod -R 755 /usr/lib/enigma2/python/Plugins/Extensions/$PLUGIN_DIR
+chmod -R 755 $PLUGIN_PATH
 
-# 4. Instalación de dependencias
-echo "> Instalando paquetes necesarios..."
+# 4. Instalar dependencias del sistema
+echo "> Instalando paquetes necesarios (Python & Curl)..."
 opkg update
-opkg install python3-core python3-twisted-web python3-netclient curl yt-dlp
+opkg install python3-twisted-web python3-core curl
 
-# Limpieza de posibles archivos compilados viejos
-rm -f /usr/lib/enigma2/python/Plugins/Extensions/$PLUGIN_DIR/*.pyc
+# 5. Instalación inteligente de yt-dlp
+if ! command -v yt-dlp &> /dev/null; then
+    echo "> yt-dlp no detectado, intentando instalar desde feeds..."
+    if ! opkg install yt-dlp; then
+        echo "> Error en feeds: Instalando yt-dlp binario manualmente..."
+        curl -kLs https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/bin/yt-dlp
+        chmod 755 /usr/bin/yt-dlp
+    fi
+fi
 
 echo "================================================="
-echo "   INSTALACIÓN v$VERSION COMPLETADA"
-echo "   REINICIANDO ENIGMA2..."
+echo "   INSTALACIÓN COMPLETADA EXITOSAMENTE"
+echo "   REINICIANDO ENIGMA2 PARA CARGAR EL PLUGIN..."
 echo "================================================="
+
+# Reiniciar la interfaz para que aparezca el plugin en el menú
 killall -9 enigma2
+
+exit 0
