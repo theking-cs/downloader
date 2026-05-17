@@ -7,7 +7,7 @@
 GITHUB_USER="theking-cs"
 REPO_NAME="downloader"
 URL_RAW="https://raw.githubusercontent.com/$GITHUB_USER/$REPO_NAME/main"
-PLUGIN_PATH="/usr/lib/enigma2/python/Plugins/Extensions/downloader"
+PLUGIN_PATH="/usr/lib/enigma2/python/Plugins/Extensions/descargador"
 
 echo "================================================="
 echo "   INSTALADOR $REPO_NAME v1.0"
@@ -24,6 +24,7 @@ chmod 777 /media/hdd/Mp3
 echo "> Descargando archivos del plugin..."
 curl -kLs $URL_RAW/plugin.py -o $PLUGIN_PATH/plugin.py
 curl -kLs $URL_RAW/__init__.py -o $PLUGIN_PATH/__init__.py
+curl -kLs $URL_RAW/plugin.png -o $PLUGIN_PATH/plugin.png
 curl -kLs $URL_RAW/descargador.sh -o /usr/bin/descargador.sh
 
 # 3. Aplicar permisos de ejecución
