@@ -225,5 +225,11 @@ def main(session, **kwargs):
 def Plugins(**kwargs):
     return [
         PluginDescriptor(where=PluginDescriptor.WHERE_SESSIONSTART, fnc=autostart),
-        PluginDescriptor(name="Descargador Multimedia (by Zoubair)", where=PluginDescriptor.WHERE_PLUGINMENU, fnc=main)
+        PluginDescriptor(
+            name="Descargador Multimedia (by Zoubair)", 
+            where=PluginDescriptor.WHERE_PLUGINMENU, 
+            fnc=main, 
+            icon="plugin.png"
+        )
     ]
+
